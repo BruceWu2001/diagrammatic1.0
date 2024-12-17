@@ -1,32 +1,23 @@
-import { useEffect, useState } from "react";
-import { vscode } from '../client';
+import { useState } from "react";
+import { useApi } from '../client';
 
 
 const CategoryList = () => {
   const [num, setNum] = useState<number>(0)
-  useEffect(() => {
-
-    // client listen for reply
-    window.addEventListener('message', event => {
-
-      const message = event.data; // The JSON data our extension sent
-
-      switch (message.command) {
-          case 'refactor':
-              setNum(Math.random() * 100)
-              break;
-      }
-  });
-  })
+  const {api, response, isLoading} = useApi('greeting.get');
+  if(isLoading){
+    return (
+      <div>
+        <button onClick={() => api({name: 'bruce'})}>Click me</button>
+          <p>loading....</p>
+          <p key={num}>number...{num}</p>
+      </div>
+    );
+  }
   return (
     <div>
-      <button onClick={
-        () => {vscode.postMessage({
-              command: 'alert',
-              text: 'hello from client'
-          })
-        }
-}>Click me</button>
+      <button onClick={() => api({name: 'bruce'})}>Click me</button>
+        <p>{response}</p>
         <p key={num}>number...{num}</p>
     </div>
   );

@@ -1,24 +1,43 @@
-import { initTRPC } from '@trpc/server';
-import { z } from 'zod';
+import * as vscode from 'vscode';
+import { createCallerFactory, router } from './setup';
+import { greetingRouter } from './routers/greeting';
+import { findAndCallProcedure, getAllKeys, sendMessage } from './helpers/utils';
 
-
-// Initialize tRPC
-const t = initTRPC.create({
-  isServer: false,
-  allowOutsideOfServer: true,
+// Create main router --> include subrouters here
+export const appRouter = router({
+  greeting: greetingRouter
 });
+const createCaller = createCallerFactory(appRouter);
 
-// Create main router
-const appRouter = t.router({
-  // Greeting procedure
-  greeting: t.procedure
-    .input(
-      z.object({
-        name: z.string(),
-      }),
-    )
-    .query(({ input }) => `Hello, ${input.name}!`),
-});
+// this is used to make server side calls to the router
+export const caller = createCaller({/*context*/});
+const procedures = getAllKeys(caller);
 
-// Export the app router type to be imported on the client side
 export type AppRouter = typeof appRouter;
+export type Procedures = typeof procedures[number]; 
+
+
+
+export const runBackend = (currentWebview: vscode.WebviewPanel, context: vscode.ExtensionContext) => {
+  currentWebview.webview.onDidReceiveMessage(
+    async(message) => {
+      try {  
+        if(!currentWebview){return ;}
+        const { command, input } = message;
+        const commandPath = command.split('.'); 
+
+        // server side call 
+        const result = await findAndCallProcedure(caller, commandPath, input);
+        // vscode.window.showErrorMessage(result);
+
+        // send to webview
+        sendMessage({action:'reply', method: command, webview: currentWebview, message: result});
+      } catch (error) {
+        console.log(error);
+      }
+      return;
+    },
+    undefined,
+    context.subscriptions
+  );
+};
