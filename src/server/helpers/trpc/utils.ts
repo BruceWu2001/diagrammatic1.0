@@ -1,4 +1,4 @@
-import type { DeepKeys, Action } from "./types";
+import type { DeepKeys, Action } from "../types";
 import * as vscode from 'vscode';
 
 

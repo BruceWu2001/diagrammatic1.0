@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { useApi } from '../client';
+import { useApi } from '../../client';
 
 
-const CategoryList = () => {
-  const [num, setNum] = useState<number>(0)
-  const {api, response, isLoading} = useApi('greeting.get');
+const TextView = () => {
+  const {api, response, isLoading} = useApi('treesitter.filePaths');
   if(isLoading){
     return (
       <div>
         <button onClick={() => api({name: 'bruce'})}>Click me</button>
           <p>loading....</p>
-          <p key={num}>number...{num}</p>
       </div>
     );
   }
@@ -18,9 +16,8 @@ const CategoryList = () => {
     <div>
       <button onClick={() => api({name: 'bruce'})}>Click me</button>
         <p>{response}</p>
-        <p key={num}>number...{num}</p>
     </div>
   );
 };
 
-export default CategoryList;
+export default TextView;

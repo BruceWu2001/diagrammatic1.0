@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import { createCallerFactory, router } from './setup';
-import { greetingRouter } from './routers/greeting';
-import { findAndCallProcedure, getAllKeys, sendMessage } from './helpers/utils';
+import { tsRouter } from './routers/treesitter';
+import { findAndCallProcedure, getAllKeys, sendMessage } from './helpers/trpc/utils';
 
 // Create main router --> include subrouters here
 export const appRouter = router({
-  greeting: greetingRouter
+  treesitter: tsRouter
 });
 const createCaller = createCallerFactory(appRouter);
 
@@ -28,7 +28,6 @@ export const runBackend = (currentWebview: vscode.WebviewPanel, context: vscode.
 
         // server side call 
         const result = await findAndCallProcedure(caller, commandPath, input);
-        // vscode.window.showErrorMessage(result);
 
         // send to webview
         sendMessage({action:'reply', method: command, webview: currentWebview, message: result});

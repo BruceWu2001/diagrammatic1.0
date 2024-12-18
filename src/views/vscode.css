@@ -19,6 +19,9 @@ ol,
 ul {
 	padding-left: var(--container-padding);
 }
+p {
+	white-space: pre-wrap;
+}
 
 body > *,
 form > * {

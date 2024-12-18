@@ -53,13 +53,11 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.62.7",
     "@trpc/client": "^11.0.0-rc.485",
-    "@trpc/react-query": "^11.0.0-rc.485",
     "@trpc/server": "^11.0.0-rc.485",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.0.2",
+    "react-router": "^7.0.2",
     "superjson": "^1.1.0",
     "zod": "^3.24.1"
   }

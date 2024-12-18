@@ -48,7 +48,7 @@ const extensionConfig = {
       }
     ]
   },
-  devtool: 'nosources-source-map',
+  // devtool: 'nosources-source-map',
   infrastructureLogging: {
     level: "log", // enables logging required for problem matchers
   },
@@ -77,7 +77,7 @@ const browserConfig = {
       },
     ],
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
 };
 
 module.exports = [extensionConfig, browserConfig];
