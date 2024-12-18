@@ -1,6 +1,9 @@
 ### Impt
 1. env is defined in webpack.config.js
-2. currently typescript is compiled to js
+2. Typescript is transpiled to js
+3. webpack has 2 ways of transpiling 
+3.1. for client (web)
+3.2. for server (node)
 
 
 ## HOW THINGS WORK
@@ -12,13 +15,18 @@
 
 
 
-### server
-1. DEFINE MODEL structure as a wit file
-2. npm run generate:model; this uses a tool and define an api where ts clients can call
-3. npm run build:server; this compiles all rust server code into web assembly
+### Server
+1. TRPC server - main router defined in index.ts which will associate subrouters
+2. runs in the background listening for a message from the webview
+3. replies as a windows event
+
+### Flow (By right lol)
+1. Client posts a message to backend with a method name
+2. Attach a event listener to listen for reply
+3. Extension sees a message and calls the routes server side
+4. Server replies by posting event to webview
+5. webview parses response, takes down event listener
 
 
 
-### what is being ran?
-1. client: all js code in dist/*
-2. server: all target/*
+client webview <-- MESSAGE defined by vs api --> extension.ts <-- TRPC methods server side calls --> server
