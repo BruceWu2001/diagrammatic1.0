@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { createCallerFactory, router } from './setup';
-import { tsRouter } from './routers/treesitter';
+import { tsRouter } from './routers/tree-sitter';
 import { findAndCallProcedure, getAllKeys, sendMessage } from './helpers/trpc/utils';
 import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 

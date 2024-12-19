@@ -12,12 +12,12 @@ declare const acquireVsCodeApi: Function;
 export const vscode: vscode = acquireVsCodeApi();
 
 
-export const useApi = (command: Procedures) => {
-  const [response, setResponse] = useState<CommandOutput<typeof command> | null>(null);
+export const useApi = <C extends Procedures>(command: C) => {
+  const [response, setResponse] = useState<CommandOutput<C> | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Function to send message to the backend
-  const api = useCallback((input: CommandInput<typeof command>) => {
+  const api = useCallback((input: CommandInput<C>) => {
     setIsLoading(true);
     vscode.postMessage({
       command,

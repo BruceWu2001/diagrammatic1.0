@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import { shouldIgnore } from './utils';
 
 const readDirectory = async(dir:string, ignorePatterns: string[]):Promise<string[]> =>  {
     const files = [];
@@ -19,19 +20,18 @@ const readDirectory = async(dir:string, ignorePatterns: string[]):Promise<string
     return files;
 };
 
-const getFolderPath = ():string|never => {
+export const getFolderUri = ():vscode.Uri|never => {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     if (!workspaceFolders){
         throw new Error('no workspace is open');
     }
     const folderUri = workspaceFolders[0].uri;
-    const folderPath = folderUri.fsPath;
-    return folderPath;
+    return folderUri;
 };
 
 export const getAllFiles = async() : Promise<string[]>  => {
     try {
-        const folderPath = getFolderPath();
+        const folderPath = getFolderUri().fsPath;
         const ignorePatterns = ['dist/', 'out/', 'node_modules'];
         const files : string [] = await readDirectory(folderPath, ignorePatterns);
         return files;
@@ -43,10 +43,3 @@ export const getAllFiles = async() : Promise<string[]>  => {
     }
 };
 
-// Helper function to check if a path should be ignored
-const shouldIgnore = (fullPath: string, name: string, ignorePatterns: string[]) => {
-    return (
-        name.startsWith('.') || // Ignore hidden directories/files
-        ignorePatterns.some(pattern => fullPath.includes(pattern)) // Match ignore patterns
-    );
-};
