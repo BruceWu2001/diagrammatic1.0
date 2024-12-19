@@ -14,6 +14,7 @@ const App = () => {
       <Route path="/" element={ <Home/>} />
       <Route path="workspace" element={<WorkspaceLayout />}>
         <Route index element={<TextView />} />
+        {/* <Route path="content" element={<FileContent/>}/> */}
       </Route>
     </Routes>
   );

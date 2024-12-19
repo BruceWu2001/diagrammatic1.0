@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Link } from 'react-router';
 import { useApi } from '../../client';
 
 
@@ -12,10 +12,14 @@ const TextView = () => {
       </div>
     );
   }
+  console.log("files:", response)
   return (
     <div>
+      <Link to='/'>BACK TO HOME</Link>
       <button onClick={() => api({name: 'bruce'})}>Click me</button>
-        <p>{response}</p>
+        <h1>FILES INCLUDE: </h1>
+        <br/>
+        <p>{`${response?.join('\n')}`}</p>
     </div>
   );
 };

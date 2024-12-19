@@ -30,3 +30,10 @@
 
 
 client webview <-- MESSAGE defined by vs api --> extension.ts <-- TRPC methods server side calls --> server
+
+
+### RUN
+npm run build
+open extension.ts
+run -> start debugging
+ctrl shift p, cat coding: start coding

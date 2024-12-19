@@ -1,4 +1,4 @@
-import type { Procedures } from "src/server";
+import type { CommandInput, CommandOutput, Procedures, RouterInput, RouterOutput } from "src/server";
 import { useState, useCallback, useEffect } from "react";
 
 type Message = {
@@ -13,11 +13,11 @@ export const vscode: vscode = acquireVsCodeApi();
 
 
 export const useApi = (command: Procedures) => {
-  const [response, setResponse] = useState<any>(null);
+  const [response, setResponse] = useState<CommandOutput<typeof command> | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Function to send message to the backend
-  const api = useCallback((input:object) => {
+  const api = useCallback((input: CommandInput<typeof command>) => {
     setIsLoading(true);
     vscode.postMessage({
       command,

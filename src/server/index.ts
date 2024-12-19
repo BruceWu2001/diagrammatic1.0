@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { createCallerFactory, router } from './setup';
 import { tsRouter } from './routers/treesitter';
 import { findAndCallProcedure, getAllKeys, sendMessage } from './helpers/trpc/utils';
+import type { inferRouterInputs, inferRouterOutputs } from '@trpc/server';
 
 // Create main router --> include subrouters here
 export const appRouter = router({
@@ -15,8 +16,27 @@ const procedures = getAllKeys(caller);
 
 export type AppRouter = typeof appRouter;
 export type Procedures = typeof procedures[number]; 
+export type RouterInput = inferRouterInputs<AppRouter>;
+export type RouterOutput = inferRouterOutputs<AppRouter>;
 
+// Extract the input and output types dynamically
+export type CommandInput<T extends string> =
+  T extends `${infer Root}.${infer Key}`
+    ? Root extends keyof RouterInput
+      ? Key extends keyof RouterInput[Root]
+        ? RouterInput[Root][Key]
+        : never
+      : never
+    : never;
 
+export type CommandOutput<T extends string> =
+  T extends `${infer Root}.${infer Key}`
+    ? Root extends keyof RouterOutput
+      ? Key extends keyof RouterOutput[Root]
+        ? RouterOutput[Root][Key]
+        : never
+      : never
+    : never;
 
 export const runBackend = (currentWebview: vscode.WebviewPanel, context: vscode.ExtensionContext) => {
   currentWebview.webview.onDidReceiveMessage(

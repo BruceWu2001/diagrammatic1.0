@@ -1,6 +1,7 @@
 import z from "zod";
 import { router, publicProcedure } from "../setup";
 import { readCodebase } from "../helpers/read-codebase/utils";
+import { getAllFiles } from "../helpers/read-codebase/dir-nav-helpers";
 
 export const tsRouter = router({
   // Greeting procedure
@@ -11,7 +12,7 @@ export const tsRouter = router({
       }),
     )
     .query(async({ input }) => {
-      const files = await readCodebase();
-      return `FILES INCLUDE: \n\n ${files}`;
+      const files = await getAllFiles();
+      return files;
     }),
 });
